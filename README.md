@@ -13,6 +13,25 @@ mingw32-make
 
 Для сборки достаточно файлов проекта. Для поиска требуется интернет.
 
+### macOS (MacBook с Apple Silicon или Intel)
+
+Установите инструменты разработчика из Терминала и дождитесь завершения установки
+
+```sh
+xcode-select --install
+```
+
+Затем скачайте проект и соберите его
+
+```sh
+git clone https://github.com/Nevermore1218/lab_oop_2.git
+cd lab_oop_2
+make
+./wiki-search
+```
+
+Сборка использует Apple Clang, системную библиотеку libcurl и входящую в проект библиотеку JSON. Статья открывается в браузере по умолчанию командой macOS `open`. При сборке создаётся программа для архитектуры текущего Mac.
+
 ## Как пользоваться
 
 1. Введите тему, например `ЛЭТИ` или `C++`, и нажмите Enter.
@@ -26,10 +45,10 @@ mingw32-make
 | Класс | Ответственность |
 | --- | --- |
 | `ConsoleInput` | Чтение запроса и проверка номера статьи |
-| `WikipediaClient` | Кодирование запроса в UTF-8 с percent-encoding и HTTPS-запрос через WinHTTP |
+| `WikipediaClient` | Кодирование запроса в UTF-8 с percent-encoding и HTTPS-запрос через WinHTTP на Windows или libcurl на macOS |
 | `SearchResponseParser` | Разбор JSON и извлечение заголовка и идентификатора каждой статьи |
 | `ResultPrinter` | Вывод списка статей или сообщения о пустом результате |
-| `BrowserLauncher` | Открытие ссылки с параметром `curid` через Windows Shell |
+| `BrowserLauncher` | Открытие ссылки с параметром `curid` через Windows Shell или macOS open |
 | `Application` | Цикл поиска и обработка ошибок |
 
 Структура `Article` хранит данные одной статьи. Файл `main.cpp` настраивает вывод UTF-8 и запускает приложение. Для разбора JSON используется nlohmann/json 3.11.3 из `third_party/nlohmann`.

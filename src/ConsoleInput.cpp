@@ -1,6 +1,8 @@
 #include "ConsoleInput.h"
 
+#ifdef _WIN32
 #include <windows.h>
+#endif
 
 #include <charconv>
 #include <iostream>
@@ -18,6 +20,7 @@ std::string trim(const std::string& line) {
 }
 
 std::optional<std::string> ConsoleInput::readLine() const {
+#ifdef _WIN32
     const HANDLE input = GetStdHandle(STD_INPUT_HANDLE);
     DWORD mode = 0;
     if (!GetConsoleMode(input, &mode)) {
@@ -49,6 +52,13 @@ std::optional<std::string> ConsoleInput::readLine() const {
     std::string utf8(bytes, '\0');
     WideCharToMultiByte(CP_UTF8, 0, line.data(), length, utf8.data(), bytes, nullptr, nullptr);
     return trim(utf8);
+#else
+    std::string line;
+    if (std::getline(std::cin, line)) {
+        return trim(line);
+    }
+    return std::nullopt;
+#endif
 }
 
 std::optional<std::string> ConsoleInput::readQuery() const {

@@ -1,5 +1,6 @@
 #include "WikipediaClient.h"
 
+#ifdef _WIN32
 #include <windows.h>
 #include <winhttp.h>
 
@@ -77,3 +78,4 @@ std::string WikipediaClient::search(const std::string& query) const {
     } while (count > 0);
     return response;
 }
+#endif
