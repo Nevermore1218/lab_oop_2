@@ -1,6 +1,5 @@
 #include "WikipediaClient.h"
 
-#ifdef __APPLE__
 #include <curl/curl.h>
 
 #include <memory>
@@ -75,4 +74,3 @@ std::string WikipediaClient::search(const std::string& query) const {
     }
     return response;
 }
-#endif

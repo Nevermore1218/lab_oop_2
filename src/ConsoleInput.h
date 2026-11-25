@@ -1,13 +1,13 @@
 #pragma once
 
-#include <cstddef>
 #include <optional>
 #include <string>
+#include <cstddef>
 
 class ConsoleInput {
 public:
     std::optional<std::string> readQuery() const;
-    // Ноль означает новый поиск, конец ввода завершает программу.
+
     std::optional<std::size_t> readChoice(std::size_t articleCount) const;
 
 private:

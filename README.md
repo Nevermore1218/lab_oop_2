@@ -4,13 +4,6 @@
 
 ## Сборка и запуск
 
-Для Windows 10/11 с MinGW-w64 нужны команды `g++` и `mingw32-make` в PATH. В PowerShell из папки проекта выполните
-
-```powershell
-mingw32-make
-.\wiki-search.exe
-```
-
 Для сборки достаточно файлов проекта. Для поиска требуется интернет.
 
 ### macOS (MacBook с Apple Silicon или Intel)
@@ -45,10 +38,10 @@ make
 | Класс | Ответственность |
 | --- | --- |
 | `ConsoleInput` | Чтение запроса и проверка номера статьи |
-| `WikipediaClient` | Кодирование запроса в UTF-8 с percent-encoding и HTTPS-запрос через WinHTTP на Windows или libcurl на macOS |
+| `WikipediaClient` | Кодирование запроса с percent-encoding и HTTPS-запрос через libcurl |
 | `SearchResponseParser` | Разбор JSON и извлечение заголовка и идентификатора каждой статьи |
 | `ResultPrinter` | Вывод списка статей или сообщения о пустом результате |
-| `BrowserLauncher` | Открытие ссылки с параметром `curid` через Windows Shell или macOS open |
+| `BrowserLauncher` | Открытие ссылки с параметром `curid` через macOS open |
 | `Application` | Цикл поиска и обработка ошибок |
 
-Структура `Article` хранит данные одной статьи. Файл `main.cpp` настраивает вывод UTF-8 и запускает приложение. Для разбора JSON используется nlohmann/json 3.11.3 из `third_party/nlohmann`.
+Структура `Article` хранит данные одной статьи. Файл `main.cpp` запускает приложение. Для разбора JSON используется nlohmann/json 3.11.3 из `third_party/nlohmann`.

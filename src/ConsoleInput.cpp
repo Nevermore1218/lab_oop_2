@@ -1,12 +1,7 @@
 #include "ConsoleInput.h"
 
-#ifdef _WIN32
-#include <windows.h>
-#endif
-
 #include <charconv>
 #include <iostream>
-#include <stdexcept>
 
 namespace {
 std::string trim(const std::string& line) {
@@ -20,45 +15,11 @@ std::string trim(const std::string& line) {
 }
 
 std::optional<std::string> ConsoleInput::readLine() const {
-#ifdef _WIN32
-    const HANDLE input = GetStdHandle(STD_INPUT_HANDLE);
-    DWORD mode = 0;
-    if (!GetConsoleMode(input, &mode)) {
-        std::string line;
-        if (std::getline(std::cin, line)) {
-            return trim(line);
-        }
-        return std::nullopt;
-    }
-
-    // В консоли Windows читаем UTF-16 напрямую, независимо от кодовой страницы ввода.
-    std::wstring line;
-    wchar_t buffer[256];
-    while (line.empty() || line.back() != L'\n') {
-        DWORD count = 0;
-        if (!ReadConsoleW(input, buffer, 256, &count, nullptr)) {
-            throw std::runtime_error("Не удалось прочитать ввод из консоли.");
-        }
-        if (count == 0 || buffer[0] == L'\x1a') {
-            return std::nullopt;
-        }
-        line.append(buffer, count);
-    }
-    const int length = static_cast<int>(line.size());
-    const int bytes = WideCharToMultiByte(CP_UTF8, 0, line.data(), length, nullptr, 0, nullptr, nullptr);
-    if (!bytes) {
-        throw std::runtime_error("Не удалось декодировать введённую строку.");
-    }
-    std::string utf8(bytes, '\0');
-    WideCharToMultiByte(CP_UTF8, 0, line.data(), length, utf8.data(), bytes, nullptr, nullptr);
-    return trim(utf8);
-#else
     std::string line;
     if (std::getline(std::cin, line)) {
         return trim(line);
     }
     return std::nullopt;
-#endif
 }
 
 std::optional<std::string> ConsoleInput::readQuery() const {
